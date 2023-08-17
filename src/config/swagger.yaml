@@ -38,7 +38,28 @@ paths:
 
       responses:
         "201":
-          description: user register successfully
+          description: user login successfully
+  /login:
+    post:
+      tags:
+        - Users
+      requestBody:
+        description: user login request
+        required: true
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                password:
+                  type: string
+                email:
+                  type: string
+
+      responses:
+        "201":
+          description: user login successfully
+
   # /verify:
   #   post:
   #     tags:

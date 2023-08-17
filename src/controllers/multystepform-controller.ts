@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import User from "models/User";
 import bcrypt from "bcrypt"
+import jwt from "jsonwebtoken";   
 
 
 export const createUser = async (req: Request , res: Response) => {
@@ -39,7 +40,24 @@ export const login = async (req: Request , res: Response) => {
         return res.status(401).json("user did not find")
     }
 const result = await bcrypt.compare(password, user.password);
-   }catch (error) {}
+
+if (result) {
+    const sighData = {
+        nam:user.name,
+        id:user.id,
+    };
+
+    const token = jwt.sign(sighData, process.env.JWT_SECRET!);
+
+
+    return res.status(200).json({...sighData, token})
+}
+
+
+   }catch (error) {
+
+    return res.status(401).json(error);
+   }
 };
 
     
